@@ -6,7 +6,7 @@ FOR TESTING MAG POSTMAN NALANG MUNA KAYO
 
 IF MAG AI KAYO MAKE SURE NA WALANG COMMENTS AH HAHAHA
 
-NO PRESSURE CHILL LANG KAYO (ZOOM OUT)
+NO PRESSURE CHILL LANG KAYO
                                                                                                                                                       
                                                                                     '...`     ,`..'.                                                  
                                                                                   : >-__.   I.`+--_".                                                 
