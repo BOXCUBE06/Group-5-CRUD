@@ -14,7 +14,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        $profiles = Profile::all();
+
+        return response()->json($profiles, 200);
     }
 
 
@@ -54,7 +56,10 @@ class ProfileController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
+    $profile = Profile::findOrFail($id);
+
+        return response()->json($profile, 200);
     }
 
 
