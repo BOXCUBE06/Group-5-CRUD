@@ -64,9 +64,24 @@ class ProfileController extends Controller
         * DANIEL DULATRE
         *------------------
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Profile $profile)
     {
-        //
+        $validated = $request->validate([
+            'first_name'    => 'required|string|max:255',
+            'middle_name'   => 'nullable|string|max:255',
+            'last_name'     => 'required|string|max:255',
+            'age'           => 'required|integer|min:0',
+            'date_of_birth' => 'required|date',
+            'address'       => 'required|string',
+            'phone_number'  => 'required|string|max:20|unique:personal_info,phone_number,' . $profile->id,
+        ]);
+
+        $profile->update($validated);
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'data'    => $profile
+        ], 200);
     }
 
 
