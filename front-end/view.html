@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>View Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-bold mb-4 text-blue-800">Profile Details</h2>
+        <div id="content" class="space-y-3 text-gray-700">Loading...</div>
+        <div class="mt-6 border-t pt-4">
+            <a href="index.html" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Back to List</a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        async function fetchDetails() {
+            const res = await fetch(`http://localhost:8000/api/profiles/${id}`);
+            const p = await res.json();
+            
+            // Fixed to include middle name
+            document.getElementById('content').innerHTML = `
+                <p><strong>First Name:</strong> ${p.first_name}</p>
+                <p><strong>Middle Name:</strong> ${p.middle_name || 'N/A'}</p>
+                <p><strong>Last Name:</strong> ${p.last_name}</p>
+                <p><strong>Email:</strong> ${p.email}</p>
+                <p><strong>Phone:</strong> ${p.phone_number}</p>
+                <p><strong>Age:</strong> ${p.age}</p>
+                <p><strong>DOB:</strong> ${p.date_of_birth}</p>
+                <p><strong>Address:</strong> ${p.address}</p>
+            `;
+        }
+        fetchDetails();
+    </script>
+</body>
+</html>

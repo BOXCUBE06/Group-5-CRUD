@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Profiles</h1>
+            <a href="create.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Create New</a>
+        </div>
+
+        <div class="bg-white rounded shadow-md overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="p-4">First Name</th>
+                        <th class="p-4">Last Name</th>
+                        <th class="p-4">Email</th>
+                        <th class="p-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="profileTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api/profiles';
+
+        async function fetchProfiles() {
+            const res = await fetch(API_URL);
+            const profiles = await res.json();
+            const tableBody = document.getElementById('profileTableBody');
+            tableBody.innerHTML = '';
+
+            profiles.forEach(p => {
+                tableBody.innerHTML += `
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="p-4">${p.first_name}</td>
+                        <td class="p-4">${p.last_name}</td>
+                        <td class="p-4">${p.email}</td>
+                        <td class="p-4 text-center space-x-2">
+                            <a href="view.html?id=${p.id}" class="text-green-600 font-medium hover:underline">View</a>
+                            <a href="update.html?id=${p.id}" class="text-yellow-600 font-medium hover:underline">Update</a>
+                            <button onclick="deleteProfile(${p.id})" class="text-red-600 font-medium hover:underline">Delete</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        async function deleteProfile(id) {
+            if (confirm('Are you sure?')) {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                fetchProfiles();
+            }
+        }
+        fetchProfiles();
+    </script>
+</body>
+</html>

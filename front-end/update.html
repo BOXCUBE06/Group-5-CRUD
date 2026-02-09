@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Update Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Update Profile</h2>
+        <form id="updateForm" class="space-y-4">
+            <input type="text" id="first_name" placeholder="First Name" class="w-full border p-2 rounded" required>
+            <input type="text" id="middle_name" placeholder="Middle Name" class="w-full border p-2 rounded">
+            <input type="text" id="last_name" placeholder="Last Name" class="w-full border p-2 rounded" required>
+            <input type="text" id="phone_number" placeholder="Phone" class="w-full border p-2 rounded" required>
+            <input type="number" id="age" placeholder="Age" class="w-full border p-2 rounded" required>
+            <input type="date" id="date_of_birth" class="w-full border p-2 rounded" required>
+            <textarea id="address" placeholder="Address" class="w-full border p-2 rounded" required></textarea>
+            
+            <div class="flex gap-2">
+                <button type="submit" class="bg-yellow-600 text-white px-4 py-2 rounded">Update</button>
+                <a href="index.html" class="bg-gray-500 text-white px-4 py-2 rounded text-center w-full">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/profiles';
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        async function loadProfile() {
+            const res = await fetch(`${API_BASE}/${id}`);
+            const p = await res.json();
+
+            document.getElementById('first_name').value = p.first_name;
+            document.getElementById('middle_name').value = p.middle_name || '';
+            document.getElementById('last_name').value = p.last_name;
+            document.getElementById('phone_number').value = p.phone_number;
+            document.getElementById('age').value = p.age;
+            document.getElementById('date_of_birth').value = p.date_of_birth;
+            document.getElementById('address').value = p.address;
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                first_name: document.getElementById('first_name').value,
+                middle_name: document.getElementById('middle_name').value,
+                last_name: document.getElementById('last_name').value,
+                phone_number: document.getElementById('phone_number').value,
+                age: document.getElementById('age').value,
+                date_of_birth: document.getElementById('date_of_birth').value,
+                address: document.getElementById('address').value,
+            };
+
+            const res = await fetch(`${API_BASE}/${id}`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json' 
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                window.location.href = 'index.html';
+            } else {
+                const errorData = await res.json();
+                console.log("Validation Errors:", errorData.errors);
+                alert("Error: " + (errorData.message || "Update failed"));
+            }
+        });
+
+        loadProfile();
+    </script>
+</body>
+</html>
