@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Profile;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -33,7 +33,7 @@ class ProfileController extends Controller
             'age'           => 'required|integer|min:0',
             'date_of_birth' => 'required|date',
             'address'       => 'required|string',
-            'email'         => 'required|email|unique:profiles,email',
+            'email'         => 'required|email|unique:personal_info,email',
             'phone_number'  => 'required|string|max:20',
         ]);
 
