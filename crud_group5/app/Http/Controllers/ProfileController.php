@@ -98,6 +98,14 @@ class ProfileController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $profile = Profile::find($id);
+    
+        if (!$profile) {
+            return response()->json(['message' => 'Profile not found'], 404);
+        }
+    
+        $profile->delete();
+    
+        return response()->json(['message' => 'Profile deleted successfully'], 200);
     }
 }
