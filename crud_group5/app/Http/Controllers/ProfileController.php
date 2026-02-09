@@ -26,7 +26,23 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name'    => 'required|string|max:50',
+            'middle_name'   => 'nullable|string|max:50',
+            'last_name'     => 'required|string|max:50',
+            'age'           => 'required|integer|min:0',
+            'date_of_birth' => 'required|date',
+            'address'       => 'required|string',
+            'email'         => 'required|email|unique:profiles,email',
+            'phone_number'  => 'required|string|max:20',
+        ]);
+
+        $profile = Profile::create($validated);
+
+        return response()->json([
+            'message' => 'Profile created successfully!',
+            'profile' => $profile
+        ], 201);
     }
 
 
